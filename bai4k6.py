@@ -76,7 +76,7 @@ elif choice == "📋 Quản lý":
         with t_del:
             if st.button("Xác nhận Xóa"):
                 del_tk(tid)
-                st.rerunelse:
+                st.rerun():
     st.subheader("📊 Tổng quan tiến độ")
     df = get_tk()
     if not df.empty:
