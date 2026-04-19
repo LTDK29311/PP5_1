@@ -48,7 +48,6 @@ elif choice == "📋 Quản lý":
     col_f1, col_f2 = st.columns(2)
     search = col_f1.text_input("🔍 Tìm tên việc")
     f_stat = col_f2.selectbox("Lọc trạng thái", ["Tất cả"] + ["Chưa bắt đầu", "Đang làm", "Hoàn thành"])
-
     if search: df = df[df['name'].str.contains(search, case=False)]
     if f_stat != "Tất cả": df = df[df['status'] == f_stat]
     st.dataframe(df, use_container_width=True)
@@ -76,7 +75,8 @@ elif choice == "📋 Quản lý":
         with t_del:
             if st.button("Xác nhận Xóa"):
                 del_tk(tid)
-                st.rerun():
+                st.rerun()
+else:    
     st.subheader("📊 Tổng quan tiến độ")
     df = get_tk()
     if not df.empty:
@@ -84,7 +84,6 @@ elif choice == "📋 Quản lý":
         m1.metric("Tổng việc", len(df))
         m2.metric("Hoàn thành", len(df[df['status'] == 'Hoàn thành']))
         m3.metric("Đang làm", len(df[df['status'] == 'Đang làm']))
-
         c1, c2 = st.columns(2)
         with c1:
             fig1 = px.pie(df, names='status', title="Tỷ lệ trạng thái", hole=0.4)
@@ -93,5 +92,4 @@ elif choice == "📋 Quản lý":
             fig2 = px.bar(df['user'].value_counts().reset_index(), x='user', y='count', title="Việc theo nhân sự")
             st.plotly_chart(fig2, use_container_width=True)
     else: st.info("Chưa có dữ liệu.")
-
 st.sidebar.write("🔥 HS: Lê Trần Đăng Khoa")
