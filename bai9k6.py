@@ -2,10 +2,8 @@ import sqlite3
 import requests
 import streamlit as st
 import pandas as pd
-import plotly.express as px  # biểu đồ
+import plotly.express as px 
 import os
-
-# --- CẤU HÌNH ĐƯỜNG DẪN DATABASE ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, 'weather.db')
 
@@ -52,8 +50,7 @@ def delete_city(city_name):
     with get_connection() as conn:
         conn.execute('DELETE FROM favorite_cities WHERE city_name=?', (city_name,))
 
-
-API_KEY = "a7c2cfb71a8cd99f93a15a609eef64ff"  # Nhớ thay API Key của OpenWeatherMap vào đây nhé
+API_KEY = st.secrets("API_KEY")
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 
@@ -84,7 +81,7 @@ def setup_page():
     )
     st.markdown("""
         <style>
-        .stApp { background: linear-gradient(to right, #e0f7fa, #80deea); }
+        .stApp { background: linear-gradient(to right, #e0f7fa, #000080	); }
         .big-font { font-size: 20px !important; }
         </style>
     """, unsafe_allow_html=True)
@@ -99,13 +96,10 @@ def show_header():
 def convert_df_to_csv(df):
     return df.to_csv(index=False).encode('utf-8-sig')
 
-
-# --- KHỞI CHẠY ỨNG DỤNG ---
 create_table()
 setup_page()
 show_header()
 
-# --- SIDEBAR: QUẢN LÝ THÀNH PHỐ YÊU THÍCH ---
 st.sidebar.header("❤️ Thành phố yêu thích")
 df_cities = view_all_cities()
 
@@ -117,7 +111,6 @@ if not df_cities.empty:
 
     st.sidebar.markdown("---")
 
-    # Đưa đoạn chọn và xóa vào trong khối IF để tránh lỗi khi danh sách trống
     city_to_delete = st.sidebar.selectbox("Chọn thành phố để xóa", list_city_names)
     if st.sidebar.button("Xóa khỏi danh sách"):
         delete_city(city_to_delete)
@@ -126,7 +119,6 @@ if not df_cities.empty:
 else:
     st.sidebar.info("Chưa có thành phố nào được lưu.")
 
-# --- GIAO DIỆN CHÍNH: TABS ---
 tab1, tab2 = st.tabs(["🔍 Tra cứu & Lưu trữ", "📊 Thống kê & So sánh"])
 
 with tab1:
@@ -201,7 +193,7 @@ with tab2:
                              color_continuous_scale='RdYlBu_r')
                 st.plotly_chart(fig, use_container_width=True)
 
-                # Đưa bảng dữ liệu và nút tải vào trong khối IF của nút bấm
+               
                 st.write("### 📋 Bảng dữ liệu chi tiết")
                 st.dataframe(df_report)
 
