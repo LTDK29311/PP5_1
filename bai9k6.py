@@ -50,7 +50,7 @@ def delete_city(city_name):
     with get_connection() as conn:
         conn.execute('DELETE FROM favorite_cities WHERE city_name=?', (city_name,))
 
-API_KEY = st.secrets("API_KEY")
+API_KEY = st.secrets["API_KEY"]
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 
